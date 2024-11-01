@@ -1,202 +1,205 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
-// Abstract class Person (abstraction)
-abstract class Person {
-    protected String name;
-    protected int age;
+// Kelas abstrak Orang (abstraksi)
+// untuk menyembunyikan beberapa detail dan hanya menampilkan informasi yang esensial kepada user 
+// dan abstract class tidak  bisa digunakan untuk membuat objek dan harus digunakan melalui subclass
+abstract class Orang { 
 
-    // Constructor
-    public Person(String name, int age) {
-        this.name = name;
-        this.age = age;
+    protected String nama;
+    protected int umur;
+
+    // Konstruktor
+    public Orang(String nama, int umur) {
+        this.nama = nama;
+        this.umur = umur;
     }
 
-    // Abstract method
-    public abstract void displayInfo();
+    // Metode abstrak
+    public abstract void tampilkanInfo();
 }
 
-// Class Member extends Person (inheritance, encapsulation)
-class Member extends Person {
-    private String memberId;
+// Kelas Anggota extends Orang (inheritance, encapsulasi)
+class Anggota extends Orang {
+    private String idAnggota;
 
-    public Member(String name, int age, String memberId) {
-        super(name, age);
-        this.memberId = memberId;
+    public Anggota(String nama, int umur, String idAnggota) {
+        super(nama, umur); //super keyword berfungsi untuk mereferensi class Orang
+        this.idAnggota = idAnggota;
     }
 
-    // Method to display member information (polymorphism)
-    @Override
-    public void displayInfo() {
-        System.out.println("Member Name: " + name + ", Age: " + age + ", Member ID: " + memberId);
+    // Metode untuk menampilkan informasi anggota (polimorfisme)
+    @Override// digunakan ketika nama method yang ada pada subclass sama dengan nama method yang ada pada superclass
+    public void tampilkanInfo() { 
+        System.out.println("Nama Anggota: " + nama + ", Umur: " + umur + ", ID Anggota: " + idAnggota);
     }
 
-    public String getMemberId() {
-        return memberId;
+    public String getIdAnggota() {
+        return idAnggota;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public void setIdAnggota(String idAnggota) {
+        this.idAnggota = idAnggota;
     }
 }
 
-// Class Buku (Book) with methods for managing books
+// Kelas Buku dengan metode untuk mengelola buku
 class Buku {
-    private String bookTitle;
-    private String author;
+    private String judulBuku;
+    private String penulis;
 
-    public Buku(String bookTitle, String author) {
-        this.bookTitle = bookTitle;
-        this.author = author;
+    public Buku(String judulBuku, String penulis) {
+        this.judulBuku = judulBuku;
+        this.penulis = penulis;
     }
 
-    public void displayBookInfo() {
-        System.out.println("Book Title: " + bookTitle + ", Author: " + author);
+    public void tampilkanInfoBuku() {
+        System.out.println("Judul Buku: " + judulBuku + ", Penulis: " + penulis);
     }
 
-    public String getBookTitle() {
-        return bookTitle;
+    public String getJudulBuku() {
+        return judulBuku;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getPenulis() {
+        return penulis;
     }
 }
 
-// Class PeminjamanBuku (Book Borrowing) with methods for borrowing books
+// Kelas PeminjamanBuku dengan metode untuk peminjaman buku
 class PeminjamanBuku {
-    private Member member;
+    private Anggota anggota;
     private Buku buku;
 
-    public PeminjamanBuku(Member member, Buku buku) {
-        this.member = member;
+    public PeminjamanBuku(Anggota anggota, Buku buku) {
+        this.anggota = anggota;
         this.buku = buku;
     }
 
-    public void borrowBook() {
-        System.out.println(member.getMemberId() + " has borrowed the book titled: " + buku.getBookTitle());
+    public void pinjamBuku() {
+        System.out.println(anggota.getIdAnggota() + " meminjam buku dengan judul: " + buku.getJudulBuku());
     }
 
-    public void returnBook() {
-        System.out.println(member.getMemberId() + " has returned the book titled: " + buku.getBookTitle());
+    public void kembalikanBuku() {
+        System.out.println(anggota.getIdAnggota() + " mengembalikan buku dengan judul: " + buku.getJudulBuku());
     }
 }
 
-// Class DataPegawai (Employee Data) for handling employee details
+// Kelas DataPegawai untuk mengelola data pegawai
 class DataPegawai {
-    private String employeeName;
-    private String employeeId;
+    private String namaPegawai;
+    private String idPegawai;
 
-    public DataPegawai(String employeeName, String employeeId) {
-        this.employeeName = employeeName;
-        this.employeeId = employeeId;
+    public DataPegawai(String namaPegawai, String idPegawai) {
+        this.namaPegawai = namaPegawai;
+        this.idPegawai = idPegawai;
     }
 
-    public void displayEmployeeInfo() {
-        System.out.println("Employee Name: " + employeeName + ", Employee ID: " + employeeId);
+    public void tampilkanInfoPegawai() {
+        System.out.println("Nama Pegawai: " + namaPegawai + ", ID Pegawai: " + idPegawai);
     }
 
-    public String getEmployeeId() {
-        return employeeId;
+    public String getIdPegawai() {
+        return idPegawai;
     }
 
-    public String getEmployeeName() {
-        return employeeName;
+    public String getNamaPegawai() {
+        return namaPegawai;
     }
 }
 
-// Main class
+// Kelas utama
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Member> members = new ArrayList<>();
-        ArrayList<Buku> books = new ArrayList<>();
-        ArrayList<DataPegawai> employees = new ArrayList<>();
+        ArrayList<Anggota> anggotaList = new ArrayList<>();
+        ArrayList<Buku> bukuList = new ArrayList<>();
+        ArrayList<DataPegawai> pegawaiList = new ArrayList<>();
 
         while (true) {
             System.out.println("Menu:");
-            System.out.println("1. Add Member");
-            System.out.println("2. Add Book");
-            System.out.println("3. Borrow Book");
-            System.out.println("4. Add Employee");
-            System.out.println("5. Exit");
-            System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            System.out.println("1. Tambah Anggota");
+            System.out.println("2. Tambah Buku");
+            System.out.println("3. Pinjam Buku");
+            System.out.println("4. Tambah Pegawai");
+            System.out.println("5. Keluar");
+            System.out.print("Pilih opsi: ");
+            int pilihan = scanner.nextInt();
+            scanner.nextLine();  // Konsumsi baris baru
 
-            switch (choice) {
+            switch (pilihan) {
                 case 1:
-                    System.out.print("Enter member name: ");
-                    String memberName = scanner.nextLine();
-                    System.out.print("Enter member age: ");
-                    int memberAge = scanner.nextInt();
-                    System.out.print("Enter member ID: ");
-                    String memberId = scanner.next();
-                    members.add(new Member(memberName, memberAge, memberId));
-                    System.out.println("Member added successfully.");
+                    System.out.print("Masukkan nama anggota: ");
+                    String namaAnggota = scanner.nextLine();
+                    System.out.print("Masukkan umur anggota: ");
+                    int umurAnggota = scanner.nextInt();
+                    System.out.print("Masukkan ID anggota: ");
+                    String idAnggota = scanner.next();
+                    anggotaList.add(new Anggota(namaAnggota, umurAnggota, idAnggota));
+                    System.out.println("Anggota berhasil ditambahkan.");
                     break;
 
                 case 2:
-                    System.out.print("Enter book title: ");
-                    String bookTitle = scanner.nextLine();
-                    System.out.print("Enter author name: ");
-                    String author = scanner.nextLine();
-                    books.add(new Buku(bookTitle, author));
-                    System.out.println("Book added successfully.");
+                    System.out.print("Masukkan judul buku: ");
+                    String judulBuku = scanner.nextLine();
+                    System.out.print("Masukkan nama penulis: ");
+                    String penulis = scanner.nextLine();
+                    bukuList.add(new Buku(judulBuku, penulis));
+                    System.out.println("Buku berhasil ditambahkan.");
                     break;
 
                 case 3:
-                    if (members.isEmpty()) {
-                        System.out.println("No members available. Please add a member first.");
+                    if (anggotaList.isEmpty()) {
+                        System.out.println("Belum ada anggota. Silakan tambah anggota terlebih dahulu.");
                         break;
                     }
-                    if (books.isEmpty()) {
-                        System.out.println("No books available. Please add a book first.");
-                        break;
-                    }
-
-                    System.out.println("Choose a member by index: ");
-                    for (int i = 0; i < members.size(); i++) {
-                        System.out.println(i + ". " + members.get(i).getMemberId());
-                    }
-                    int memberIndex = scanner.nextInt();
-
-                    if (memberIndex < 0 || memberIndex >= members.size()) {
-                        System.out.println("Invalid member index.");
+                    if (bukuList.isEmpty()) {
+                        System.out.println("Belum ada buku. Silakan tambah buku terlebih dahulu.");
                         break;
                     }
 
-                    System.out.println("Choose a book by index: ");
-                    for (int i = 0; i < books.size(); i++) {
-                        System.out.println(i + ". " + books.get(i).getBookTitle());
+                    System.out.println("Pilih anggota berdasarkan indeks: ");
+                    for (int i = 0; i < anggotaList.size(); i++) {
+                        System.out.println((i + 1) + ". " + anggotaList.get(i).getIdAnggota());
                     }
-                    int bookIndex = scanner.nextInt();
+                    int indeksAnggota = scanner.nextInt() - 1;
 
-                    if (bookIndex < 0 || bookIndex >= books.size()) {
-                        System.out.println("Invalid book index.");
+                    if (indeksAnggota < 0 || indeksAnggota >= anggotaList.size()) {
+                        System.out.println("Indeks anggota tidak valid.");
                         break;
                     }
 
-                    PeminjamanBuku borrowing = new PeminjamanBuku(members.get(memberIndex), books.get(bookIndex));
-                    borrowing.borrowBook();
+                    System.out.println("Pilih buku berdasarkan indeks: ");
+                    for (int i = 0; i < bukuList.size(); i++) {
+                        System.out.println((i + 1) + ". " + bukuList.get(i).getJudulBuku());
+                    }
+                    int indeksBuku = scanner.nextInt() - 1;
+
+                    if (indeksBuku < 0 || indeksBuku >= bukuList.size()) {
+                        System.out.println("Indeks buku tidak valid.");
+                        break;
+                    }
+
+                    PeminjamanBuku peminjaman = new PeminjamanBuku(anggotaList.get(indeksAnggota), bukuList.get(indeksBuku));
+                    peminjaman.pinjamBuku();
                     break;
 
                 case 4:
-                    System.out.print("Enter employee name: ");
-                    String employeeName = scanner.nextLine();
-                    System.out.print("Enter employee ID: ");
-                    String employeeId = scanner.nextLine();
-                    employees.add(new DataPegawai(employeeName, employeeId));
-                    System.out.println("Employee added successfully.");
+                    System.out.print("Masukkan nama pegawai: ");
+                    String namaPegawai = scanner.nextLine();
+                    System.out.print("Masukkan ID pegawai: ");
+                    String idPegawai = scanner.nextLine();
+                    pegawaiList.add(new DataPegawai(namaPegawai, idPegawai));
+                    System.out.println("Pegawai berhasil ditambahkan.");
                     break;
 
                 case 5:
-                    System.out.println("Exiting program...");
+                    System.out.println("Keluar dari program...");
                     scanner.close();
                     System.exit(0);
 
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Pilihan tidak valid. Silakan coba lagi.");
             }
         }
     }
